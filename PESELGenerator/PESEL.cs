@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PESELVeryficator
 {
-    class PESEL
+    public class PESEL
     {
         private string _pesel;
         private int genderValue;
@@ -15,6 +15,8 @@ namespace PESELVeryficator
         private DateTime dateValue;
         private bool isNumeric = true;
         private const int PESELLength = 11;
+        private List<int> peselNumbers = new List<int>();
+        private int controlNumber;
 
         public PESEL(string pesel)
         {
@@ -23,31 +25,31 @@ namespace PESELVeryficator
 
         public string GetBirthDate()
         {
-            if (!DateTime.TryParseExact(this._pesel.Substring(0, 6), "yymmdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
-                throw new FormatException("Date of birth is not in correct format");
-            return dateValue.ToString("dd-mm-yy");
+             if (!DateTime.TryParseExact(this._pesel.Substring(0, 6), "yymmdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                 throw new FormatException("Date of birth is not in correct format");
+             return dateValue.ToString("dd-mm-yy");
         }
 
         public string GetGender()
         {
-            try
-            {
-                genderValue = int.Parse(this._pesel.Substring(10, 1));
+             try
+             {
+                genderValue = int.Parse(this._pesel.Substring(9, 1));
                 if (genderValue % 2 == 0)
                     genderInfo = "K";
                 if (genderValue % 2 == 1)
                     genderInfo = "M";
-            }
-            catch (Exception)
-            {
+             }
+             catch (Exception)
+             {
                 throw new FormatException("Gender information");
-            }
-            return genderInfo;
+             }
+             return genderInfo;
         }
 
         public int GetPESELLength()
         {
-            if (this._pesel.Length == PESELLength)
+            if (this._pesel.Length != PESELLength)
                 throw new IndexOutOfRangeException("Pesel Length");
             return this._pesel.Length;
         }
@@ -57,16 +59,37 @@ namespace PESELVeryficator
             {
                 try
                 {
-                    Int32.Parse(p.ToString());                                      
+                    int.Parse(p.ToString());                                      
                 }
                 catch (Exception)
                 {
                     isNumeric = false;
-                    throw new IndexOutOfRangeException("Only numeric");
-                    
+                    throw new IndexOutOfRangeException("Only numeric");                  
                 }
             }
             return isNumeric;
+        }
+        public bool CheckControlNumber()
+        {
+            try
+            {
+                foreach (var p in this._pesel)
+                {
+                    peselNumbers.Add(int.Parse(p.ToString()));
+                }
+
+                controlNumber = 9 * peselNumbers[0] + 7 * peselNumbers[1] + 3 * peselNumbers[2] + 1 * peselNumbers[3] + 9 * peselNumbers[4] +
+                    7 * peselNumbers[5] + 3 * peselNumbers[6] + 1 * peselNumbers[7] + 9 * peselNumbers[8] + 7 * peselNumbers[9];
+
+                if (controlNumber % 10 == peselNumbers[10])
+                    return true;
+            }
+            catch 
+            {
+                throw new IndexOutOfRangeException("Control number");
+            }
+            return false;
+
         }
     }
 }

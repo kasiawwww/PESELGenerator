@@ -14,8 +14,11 @@ namespace PESELVeryficator
             string pesel = Console.ReadLine();
 
             PESEL P = new PESEL(pesel);
-            Console.WriteLine("Data urodzenia: {0}", P.GetBirthDate());
-            Console.WriteLine("Długość PESEL: {0}", P.GetPESELLength());
+            Console.WriteLine("Birth date: {0}", P.GetBirthDate());
+            Console.WriteLine("Gender: {0}", P.GetGender());
+            Console.WriteLine("PESEL length: {0}", P.GetPESELLength());
+            Console.WriteLine("Is only numeric: {0}", P.IsOnlyNumeric());
+            Console.WriteLine("Is control number valid: {0}", P.CheckControlNumber());
             Console.Read();
         }
     }
