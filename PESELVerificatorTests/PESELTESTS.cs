@@ -125,13 +125,15 @@ namespace PESELVerificatorTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
         public void CheckControlNumber_InvalidControlNumber()
         {
-            string peselValue = "9507061212789";
+            string peselValue = "95070612127";
+            bool expected = false;
 
             PESEL p = new PESEL(peselValue);
-            p.CheckControlNumber();
+            bool actual = p.CheckControlNumber();
+
+            Assert.AreEqual(expected, actual);
 
         }
     }

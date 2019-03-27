@@ -71,23 +71,18 @@ namespace PESELVeryficator
         }
         public bool CheckControlNumber()
         {
-            try
-            {
-                foreach (var p in this._pesel)
-                {
-                    peselNumbers.Add(int.Parse(p.ToString()));
-                }
 
-                controlNumber = 9 * peselNumbers[0] + 7 * peselNumbers[1] + 3 * peselNumbers[2] + 1 * peselNumbers[3] + 9 * peselNumbers[4] +
+            foreach (var p in this._pesel)
+            {
+               peselNumbers.Add(int.Parse(p.ToString()));
+            }
+
+            controlNumber = 9 * peselNumbers[0] + 7 * peselNumbers[1] + 3 * peselNumbers[2] + 1 * peselNumbers[3] + 9 * peselNumbers[4] +
                     7 * peselNumbers[5] + 3 * peselNumbers[6] + 1 * peselNumbers[7] + 9 * peselNumbers[8] + 7 * peselNumbers[9];
 
-                if (controlNumber % 10 == peselNumbers[10])
-                    return true;
-            }
-            catch 
-            {
-                throw new IndexOutOfRangeException("Control number");
-            }
+            if (controlNumber % 10 == peselNumbers[10])
+                return true;
+
             return false;
 
         }
